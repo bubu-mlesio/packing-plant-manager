@@ -1,0 +1,33 @@
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe.config
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Form1.resources
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Properties.Resources.resources
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing plant manager.csproj.GenerateResource.Cache
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\packing plant manager.pdb
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\pl\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing plant manager.csprojResolveAssemblyReference.cache
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing plant manager.exe
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\obj\Release\packing plant manager.pdb
+C:\Users\Iza\Documents\Visual Studio 2015\Projects\packing plant manager\packing plant manager\bin\Release\ftplib.dll
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe.config
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.exe
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.pdb
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.pdb
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.csprojResolveAssemblyReference.cache
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Form1.resources
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Properties.Resources.resources
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.csproj.GenerateResource.Cache
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Form2.resources
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.csprojResolveAssemblyReference.cache
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Form1.resources
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Form2.resources
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing_plant_manager.Properties.Resources.resources
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.csproj.GenerateResource.Cache
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.csproj.CoreCompileInputs.cache
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.exe
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Release\packing plant manager.pdb
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe.config
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe
+C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.pdb

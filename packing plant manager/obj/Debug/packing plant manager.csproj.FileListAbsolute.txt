@@ -1,0 +1,22 @@
+c:\users\iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\packing plant manager.exe.config
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\packing plant manager.exe
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\packing plant manager.pdb
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\Microsoft.ReportViewer.WinForms.dll
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\ftplib.pdb
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\bin\Debug\pl\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing plant manager.csprojResolveAssemblyReference.cache
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing_plant_manager.Form1.resources
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing_plant_manager.Properties.Resources.resources
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing plant manager.csproj.GenerateResource.Cache
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing plant manager.exe
+C:\Users\Iza\documents\visual studio 2015\Projects\packing plant manager\packing plant manager\obj\Debug\packing plant manager.pdb
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Debug\packing plant manager.exe.config
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing plant manager.exe
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing plant manager.pdb
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Debug\packing plant manager.exe
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\bin\Debug\packing plant manager.pdb
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing plant manager.csprojResolveAssemblyReference.cache
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing_plant_manager.Form1.resources
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing_plant_manager.Properties.Resources.resources
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing plant manager.csproj.GenerateResource.Cache
+C:\Users\Jan Drożak\Desktop\packing plant manager\packing plant manager\obj\Debug\packing_plant_manager.Form2.resources

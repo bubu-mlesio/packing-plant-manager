@@ -1,0 +1,548 @@
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using FtpLib;
+//using System.Net.Sockets;
+//using System.Net;
+
+namespace packing_plant_manager
+{
+    public partial class Form1 : Form
+    {
+        Thread startOperations;
+        int packingStationNumber;
+        string pass;
+        internal static string Form2_Message;
+        bool unlock = true;
+
+        public Form1()
+        {
+            //load libary (dll) from .exe (main app)
+            AppDomain.CurrentDomain.AssemblyResolve += (Object sender, ResolveEventArgs args) =>
+            {
+                String thisExe = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                System.Reflection.AssemblyName embeddedAssembly = new System.Reflection.AssemblyName(args.Name);
+                String resourceName = thisExe + "." + embeddedAssembly.Name + ".dll";
+
+                using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                {
+                    Byte[] assemblyData = new Byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return System.Reflection.Assembly.Load(assemblyData);
+                }
+            };
+            InitializeComponent();
+            //check is exist file, when is old = remove
+            if (checkModified("C:\\tmp\\log.txt"))
+            {
+                File.Delete("C:\\tmp\\log.txt");
+            }
+            loadData();
+            connection.RunWorkerAsync();
+            pass = passwordGenerator();
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            //check box
+            if (server.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (login.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (password.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (packingStation.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (printer.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            else
+            {
+                //run new thread
+                packingStationNumber = Convert.ToInt32(packingStation.SelectedItem);
+                ThreadStart ts = new ThreadStart(ftpOperations);
+                startOperations = new Thread(ts);
+                btnStart.Enabled = false;
+                btnStop.Enabled = true;
+                startOperations.Start();
+                loggingBox.Items.Add("Pakowalnio wybieram Cię!");
+                saveToFile();
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //stop thread
+                startOperations.Abort();
+                btnStart.Enabled = true;
+                btnStop.Enabled = false;
+            }
+            catch (Exception)
+            {
+                loggingBox.Refresh();
+            }
+            loggingBox.Items.Add("Przerwanie pobierania etykiet");
+            saveToFile();
+
+        }
+        //main operations
+        //download .pdf and print
+        private void ftpOperations()
+        {
+            Int64 fileSize = 0;
+            bool fileProblem = false;
+            using (FtpConnection ftp = new FtpConnection(server.Text, login.Text, password.Text))
+            {
+                try
+                {
+                    ftp.Open();
+                    loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("Nawiązuję połączenie...");
+                            }));
+                    saveToFile();
+                    //connect to ftp and set remote and local directory
+                    ftp.Login();
+                    ftp.SetCurrentDirectory("//" + packingStationNumber);
+                    ftp.SetLocalDirectory("C:\\tmp");
+                }
+                catch (ThreadAbortException) { }
+                catch (Exception e)
+                {
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        loggingBox.Items.Add("Błąd połączenia " + e);
+                    }));
+                    saveToFile();
+                    btnStart.Invoke(new Action(delegate ()
+                    {
+                        btnStart.Enabled = true;
+                    }));
+                    btnStop.Invoke(new Action(delegate ()
+                    {
+                        btnStop.Enabled = false;
+                    }));
+                    startOperations.Abort();
+                }
+                while (true)
+                {
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        if (loggingBox.Items.Count > 2000)
+                        {
+                            loggingBox.Items.Clear();
+                        }
+                    }));
+                    try
+                    {
+                        //search file on ftp
+                        foreach (var file in ftp.GetFiles())
+                        {
+                            loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("Pobieram plik " + file.Name);
+                            }));
+                            saveToFile();
+                            foreach (var pdfFile in Directory.GetFiles("C:\\tmp"))
+                            {
+                                if (pdfFile == "C:\\tmp\\" + file.Name)
+                                {
+                                    loggingBox.Invoke(new Action(delegate ()
+                                    {
+                                        loggingBox.Items.Add("Znalazłem dubla: " + file.Name);
+                                    }));
+                                    saveToFile();
+                                    fileSize = new FileInfo("C:\\tmp\\" + file.Name).Length;
+                                    fileProblem = true;
+                                }
+                            }
+                            if (!fileProblem)
+                            {
+                                ftp.GetFile(file.Name, false);
+                            }
+
+                            else if (fileSize > 40000)
+                            {
+                                MessageBox.Show("Twoja etykieta została pobrana już wcześniej i prawdopodobnie została wysłana. Jej nazwa to " + file.Name, "WARRNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                loggingBox.Invoke(new Action(delegate ()
+                                {
+                                    loggingBox.Items.Add("Etykieta już jest na dysku: " + file.Name);
+                                }));
+                                saveToFile();
+                                fileProblem = true;
+
+                            }
+                            else if (fileSize < 40000)
+                            {
+                                File.Delete("C:\\tmp\\" + file.Name);
+                                ftp.GetFile(file.Name, false);
+                                loggingBox.Invoke(new Action(delegate ()
+                                {
+                                    loggingBox.Items.Add("Etykieta w tmp ma zbyt mały rozmiar: " + file.Name + " i została znowu pobrana");
+                                }));
+                                saveToFile();
+                                fileProblem = false;
+                            }
+                            ftp.RemoveFile(file.Name);
+                            if (!fileProblem)
+                            {
+                                //run program to print .pdf
+                                if (sumatra_checkbox.Checked == false)
+                                {
+                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                                    FindProgram pdfProgramName = new FindProgram();
+                                    startInfo.FileName = (pdfProgramName.findPDFprogram("Adobe") + "\\Reader 11.0\\Reader\\AcroRd32.exe");
+                                    startInfo.Arguments = "/s /o /t C:\\tmp\\" + file.Name + " " + printer.Text;
+                                    process.StartInfo = startInfo;
+                                    loggingBox.Invoke(new Action(delegate ()
+                                    {
+                                        loggingBox.Items.Add("Otwieram AR i wywołuję wydruk...");
+                                    }));
+                                    saveToFile();
+                                    process.Start();
+                                    Thread.Sleep(4000);
+                                    process.Close();
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                                    FindProgram pdfProgramName = new FindProgram();
+                                    startInfo.FileName = (pdfProgramName.findPDFprogram("SumatraPDF") + "\\SumatraPDF.exe");
+                                    startInfo.Arguments = "-silent C:\\tmp\\" + file.Name + " -print-settings fit -print-to " + printer.Text + " -exit-when-done";
+                                    process.StartInfo = startInfo;
+                                    loggingBox.Invoke(new Action(delegate ()
+                                    {
+                                        loggingBox.Items.Add("Otwieram SumatraPDF i wywołuję wydruk...");
+                                    }));
+                                    saveToFile();
+                                    process.Start();
+                                    Thread.Sleep(2000);
+                                    process.Close();
+                                }
+                            }
+                            fileProblem = false;
+                        }
+                    }
+                    catch (ThreadAbortException) { }
+                    catch (Exception e)
+                    {
+                        loggingBox.Invoke(new Action(delegate ()
+                        {
+                            loggingBox.Items.Add("Błąd przetwarzania plików " + e);
+                        }));
+                        saveToFile();
+                        loggingBox.Invoke(new Action(delegate ()
+                        {
+                            loggingBox.Items.Add("Ponowne nawiązanie połączenia");
+                        }));
+                        ftp.Close();
+                        ftp.Open();
+                        ftp.Login();
+                        ftp.SetCurrentDirectory("/" + packingStationNumber);
+                        ftp.SetLocalDirectory("C:\\tmp");
+                        continue;
+                    }
+                    Thread.Sleep(750);
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        loggingBox.Items.Add("[...]");
+                    }));
+
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        loggingBox.TopIndex = loggingBox.Items.Count - 1;
+                    }));
+                }
+            }
+        }
+        //save log
+        private void saveToFile()
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter("C:\\tmp\\log.txt", true);
+                sw.WriteLine("[" + DateTime.Now + "]" + "\t" + loggingBox.Items[loggingBox.Items.Count - 1]);
+                sw.Close();
+            }
+            catch (ThreadAbortException) { }
+            catch (Exception e)
+            {
+                loggingBox.Invoke(new Action(delegate ()
+                {
+                    loggingBox.Items.Add("Błąd zapisu" + e);
+                }));
+            }
+        }
+        //when form closing, cancel thread 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            if (MessageBox.Show("Czy na pewno chcesz zamknąć program?", "WARRNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+            {
+                
+                e.Cancel = true;
+            }
+            else
+            {
+                if(startOperations != null)
+                {
+                    if ((startOperations.ThreadState & ThreadState.Running) == ThreadState.Running)
+                    {
+                        startOperations.Abort();
+                    }
+                }
+            }
+        }
+        //load data from file
+        private void loadData()
+        {
+            if (File.Exists("C:\\Windows\\config_packing_manager.sys"))
+            {
+                string[] linijki = File.ReadAllLines("C:\\Windows\\config_packing_manager.sys", Encoding.UTF8);
+                for (int i = 0; i < linijki.Length; i++)
+                {
+                    if (linijki[i] == "")
+                    {
+                        continue;
+                    }
+                    string[] aktualnaLinijka = linijki[i].Split('=');
+                    if (aktualnaLinijka[0] == "[Server]")
+                    {
+                        server.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
+                    if (aktualnaLinijka[0] == "[Login]")
+                    {
+                        login.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
+                    if (aktualnaLinijka[0] == "[Password]")
+                    {
+                        password.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
+                    if (aktualnaLinijka[0] == "[PackingNumber]")
+                    {
+                        packingStation.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
+                    if (aktualnaLinijka[0] == "[ThermalPrinter]")
+                    {
+                        printer.Text = Base64Decode(aktualnaLinijka[1]);
+                        //printer.Text = aktualnaLinijka[1];
+                    }
+                    if (aktualnaLinijka[0] == "[SumatraPDF]")
+                    {
+                        if (aktualnaLinijka[1] == "False")
+                            sumatra_checkbox.Checked = false;
+                        else
+                            sumatra_checkbox.Checked = true;
+                    }
+                }
+                if (server.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
+                else if (login.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
+                else if (password.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
+                else if(printer.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
+                else
+                {
+                    server.Enabled = false;
+                    login.Enabled = false;
+                    password.Enabled = false;
+                    packingStation.Enabled = false;
+                    printer.Enabled = false;
+                    saveLoginData.Enabled = false;
+                    unlock = false;
+                    btnUnlock.Text = "Odblokuj";
+                }
+            }
+        }
+        //save login data for ftp
+        private void saveLoginData_Click(object sender, EventArgs e)
+        {
+            if (packingStation.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (printer.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (server.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (login.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (password.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                DialogResult dialog = MessageBox.Show("Jesteś pewny że chcesz dokonać zapisu?", "WARRNING!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (dialog == DialogResult.OK)
+                {
+                    if (File.Exists("C:\\Windows\\config_packing_manager.sys"))
+                    {
+                        File.Delete("C:\\Windows\\config_packing_manager.sys");
+                    }
+                    string[] dane = { "[Server]=" + Base64Encode(server.Text), "[Login]=" + Base64Encode(login.Text), "[Password]=" + Base64Encode(password.Text), "[PackingNumber]=" + Base64Encode(packingStation.SelectedItem.ToString()), "[ThermalPrinter]=" + Base64Encode(printer.Text), "[SumatraPDF]=" + sumatra_checkbox.Checked.ToString() };
+                    System.IO.File.WriteAllLines("C:\\Windows\\config_packing_manager.sys", dane);
+                }
+            }
+    }
+        //check date modified log.txt
+    private bool checkModified(string filename)
+    {
+        DateTime lastModified = File.GetLastWriteTime("C:\\tmp\\log.txt");
+        if (lastModified.Date < DateTime.Now.Date)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+        //Unblock textbox
+    private void btnUnlock_Click(object sender, EventArgs e)
+    {
+            if (unlock == false)
+        {
+            using (Form2 f2 = new Form2())
+            {
+                if (f2.ShowDialog() == DialogResult.OK)
+                {
+                        if (Form2_Message == pass)
+                        {
+                            server.Enabled = true;
+                            login.Enabled = true;
+                            password.Enabled = true;
+                            packingStation.Enabled = true;
+                            printer.Enabled = true;
+                            saveLoginData.Enabled = true;
+                            unlock = true;
+                            btnUnlock.Text = "Zablokuj";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Podano błędne hasło", "ERROR 404", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("Błędne hasło!");
+                            }));
+                            saveToFile();
+                        }
+                    }
+            }
+        }
+        else
+        {
+            server.Enabled = false;
+            login.Enabled = false;
+            password.Enabled = false;
+            packingStation.Enabled = false;
+            printer.Enabled = false;
+            saveLoginData.Enabled = false;
+            unlock = false;
+            btnUnlock.Text = "Odblokuj";
+        }
+    }
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(string base64EncodedData)
+        {
+            string dummyData = base64EncodedData.Trim().Replace(" ", "+");
+            if (dummyData.Length % 4 > 0)
+                dummyData = dummyData.PadRight(dummyData.Length + 4 - dummyData.Length % 4, '=');
+            byte[] byteArray = Convert.FromBase64String(dummyData);
+            return System.Text.Encoding.UTF8.GetString(byteArray);
+        }
+        //generate password for station
+        private string passwordGenerator()
+        {
+            string namePC = Environment.MachineName;
+            DateTime dateTime = DateTime.UtcNow.Date;
+
+            return namePC + "+" + dateTime.ToString("dd.MM.yyyy");
+        }
+        private void packingStation_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            packingStation.Text = "";
+        }
+        private void packingStation_TextChanged(object sender, EventArgs e)
+        {
+            packingStation.Text = "";
+        }
+        //TODO auto update ftp data from server
+        /*private void connection_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            StartClient();
+            for(int i =0; i<5;i++) 
+                SendMessage("Witam świat, tu klient " + i);
+            //client.Disconnect();
+
+            
+        }
+        public void StartClient()
+        {
+            var config = new NetPeerConfiguration("hej");
+            config.AutoFlushSendQueue = false;
+            client = new NetClient(config);
+            client.Start();
+
+            string ip = "127.0.0.1";
+            int port = 14242;
+            client.Connect(ip, port);
+        }
+
+        public void SendMessage(string text)
+        {
+            NetOutgoingMessage message = client.CreateMessage(text);
+
+            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+            client.FlushSendQueue();
+        }
+
+        public void Disconnect()
+        {
+            client.Disconnect("Bye");
+        }*/
+
+    }
+}
+        
