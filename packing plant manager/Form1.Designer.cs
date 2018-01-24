@@ -256,7 +256,7 @@
             // connection
             // 
             this.connection.WorkerSupportsCancellation = true;
-            //this.connection.DoWork += new System.ComponentModel.DoWorkEventHandler(this.connection_DoWork);
+            this.connection.DoWork += new System.ComponentModel.DoWorkEventHandler(this.connection_DoWork);
             // 
             // Form1
             // 

@@ -4,8 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using FtpLib;
-//using System.Net.Sockets;
-//using System.Net;
+using System.Net.Sockets;
+using System.Net;
 
 namespace packing_plant_manager
 {
@@ -16,6 +16,9 @@ namespace packing_plant_manager
         string pass;
         internal static string Form2_Message;
         bool unlock = true;
+        const int PORT_NO = 2201;
+        const string SERVER_IP = "127.0.0.1";
+        static Socket clientSocket; //put here
 
         public Form1()
         {
@@ -509,40 +512,130 @@ namespace packing_plant_manager
             packingStation.Text = "";
         }
         //TODO auto update ftp data from server
-        /*private void connection_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void connection_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            StartClient();
-            for(int i =0; i<5;i++) 
-                SendMessage("Witam świat, tu klient " + i);
-            //client.Disconnect();
-
-            
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            loopConnect(3, 3); //for failure handling
+            byte[] bytes = Encoding.ASCII.GetBytes("hello");
+            clientSocket.Send(bytes);
         }
-        public void StartClient()
+        void loopConnect(int noOfRetry, int attemptPeriodInSeconds)
         {
-            var config = new NetPeerConfiguration("hej");
-            config.AutoFlushSendQueue = false;
-            client = new NetClient(config);
-            client.Start();
-
-            string ip = "127.0.0.1";
-            int port = 14242;
-            client.Connect(ip, port);
+            int attempts = 0;
+            while (!clientSocket.Connected && attempts < noOfRetry)
+            {
+                try
+                {
+                    ++attempts;
+                    loggingBox.Items.Add("Próbuję się łączyć");
+                    IAsyncResult result = clientSocket.BeginConnect(IPAddress.Parse(SERVER_IP), PORT_NO, endConnectCallback, null);
+                    result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(attemptPeriodInSeconds));
+                    System.Threading.Thread.Sleep(attemptPeriodInSeconds * 1000);
+                }
+                catch (Exception e)
+                {
+                    loggingBox.Items.Add("Error: " + e.ToString());
+                }
+            }
+            if (!clientSocket.Connected)
+            {
+                loggingBox.Items.Add("Connection attempt is unsuccessful!");
+                return;
+            }
         }
-
-        public void SendMessage(string text)
+        private const int BUFFER_SIZE = 4096;
+        private static byte[] buffer = new byte[BUFFER_SIZE]; //buffer size is limited to BUFFER_SIZE per message
+        private void endConnectCallback(IAsyncResult ar)
         {
-            NetOutgoingMessage message = client.CreateMessage(text);
-
-            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
-            client.FlushSendQueue();
+            try
+            {
+                clientSocket.EndConnect(ar);
+                if (clientSocket.Connected)
+                {
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        loggingBox.Items.Add("Jestem połączony, przesyłam dane");
+                    }));
+                    clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), clientSocket);
+                }
+                else
+                {
+                    loggingBox.Invoke(new Action(delegate ()
+                    {
+                        loggingBox.Items.Add("End of connection attempt, fail to connect...");
+                    }));
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                loggingBox.Invoke(new Action(delegate ()
+                {
+                    loggingBox.Items.Add("End-connection attempt is unsuccessful! " + e.ToString());
+                }));
+                
+            }
         }
-
-        public void Disconnect()
+        const int MAX_RECEIVE_ATTEMPT = 10;
+        static int receiveAttempt = 0;
+        private void receiveCallback(IAsyncResult result)
         {
-            client.Disconnect("Bye");
-        }*/
-
+            System.Net.Sockets.Socket socket = null;
+            try
+            {
+                socket = (System.Net.Sockets.Socket)result.AsyncState;
+                if (socket.Connected)
+                {
+                    int received = socket.EndReceive(result);
+                    if (received > 0)
+                    {
+                        receiveAttempt = 0;
+                        byte[] data = new byte[received];
+                        Buffer.BlockCopy(buffer, 0, data, 0, data.Length); //copy the data from your buffer
+                        if (Encoding.UTF8.GetString(data) == "OK")//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
+                        {
+                            loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("Wysyłam dane");
+                            }));
+                            string msg = "Requier";
+                            socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
+                        }
+                        else if (Encoding.UTF8.GetString(data) != "OK")//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
+                        {
+                            loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("server: " + Encoding.UTF8.GetString(data));
+                            }));
+                            //string msg = "OK";
+                            //socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
+                        }//DO ANYTHING THAT YOU WANT WITH data, IT IS THE RECEIVED PACKET!
+                         //Notice that your data is not string! It is actually byte[]
+                         //For now I will just print it out
+                        loggingBox.Invoke(new Action(delegate ()
+                        {
+                            loggingBox.Items.Add("Server: " + Encoding.UTF8.GetString(data));
+                        }));
+                    socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), socket);
+                    }
+                    else if (receiveAttempt < MAX_RECEIVE_ATTEMPT)
+                    { //not exceeding the max attempt, try again
+                        ++receiveAttempt;
+                        socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), socket);
+                    }
+                    else
+                    { //completely fails!
+                        loggingBox.Items.Add("receiveCallback is failed!");
+                        receiveAttempt = 0;
+                        clientSocket.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            { // this exception will happen when "this" is be disposed...
+                loggingBox.Items.Add("receiveCallback is failed! " + e.ToString());
+            }
+        }
     }
 }
         
