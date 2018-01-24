@@ -47,6 +47,10 @@
             this.btnUnlock = new System.Windows.Forms.Button();
             this.sumatra_checkbox = new System.Windows.Forms.CheckBox();
             this.connection = new System.ComponentModel.BackgroundWorker();
+            this.label7 = new System.Windows.Forms.Label();
+            this.port_number = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.serwerIP = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,11 +92,11 @@
             // 
             this.loggingBox.FormattingEnabled = true;
             this.loggingBox.ItemHeight = 24;
-            this.loggingBox.Location = new System.Drawing.Point(24, 517);
+            this.loggingBox.Location = new System.Drawing.Point(24, 565);
             this.loggingBox.Margin = new System.Windows.Forms.Padding(6);
             this.loggingBox.Name = "loggingBox";
             this.loggingBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.loggingBox.Size = new System.Drawing.Size(558, 460);
+            this.loggingBox.Size = new System.Drawing.Size(558, 412);
             this.loggingBox.TabIndex = 4;
             // 
             // server
@@ -123,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 486);
+            this.label1.Location = new System.Drawing.Point(19, 530);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 25);
@@ -245,7 +249,7 @@
             // sumatra_checkbox
             // 
             this.sumatra_checkbox.AutoSize = true;
-            this.sumatra_checkbox.Location = new System.Drawing.Point(114, 412);
+            this.sumatra_checkbox.Location = new System.Drawing.Point(114, 395);
             this.sumatra_checkbox.Margin = new System.Windows.Forms.Padding(4);
             this.sumatra_checkbox.Name = "sumatra_checkbox";
             this.sumatra_checkbox.Size = new System.Drawing.Size(151, 29);
@@ -258,12 +262,52 @@
             this.connection.WorkerSupportsCancellation = true;
             this.connection.DoWork += new System.ComponentModel.DoWorkEventHandler(this.connection_DoWork);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(24, 438);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 25);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Port:";
+            // 
+            // port_number
+            // 
+            this.port_number.Location = new System.Drawing.Point(114, 434);
+            this.port_number.Margin = new System.Windows.Forms.Padding(6);
+            this.port_number.Name = "port_number";
+            this.port_number.Size = new System.Drawing.Size(180, 29);
+            this.port_number.TabIndex = 22;
+            this.port_number.Text = "2202";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(19, 484);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(80, 25);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Serwer:";
+            // 
+            // serwerIP
+            // 
+            this.serwerIP.Location = new System.Drawing.Point(116, 481);
+            this.serwerIP.Margin = new System.Windows.Forms.Padding(6);
+            this.serwerIP.Name = "serwerIP";
+            this.serwerIP.Size = new System.Drawing.Size(180, 29);
+            this.serwerIP.TabIndex = 24;
+            this.serwerIP.Text = "127.0.0.1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(605, 991);
+            this.Controls.Add(this.serwerIP);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.port_number);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.sumatra_checkbox);
             this.Controls.Add(this.btnUnlock);
             this.Controls.Add(this.label6);
@@ -314,6 +358,10 @@
         private System.Windows.Forms.Button btnUnlock;
         private System.Windows.Forms.CheckBox sumatra_checkbox;
         private System.ComponentModel.BackgroundWorker connection;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox port_number;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox serwerIP;
     }
 }
 

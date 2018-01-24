@@ -38,11 +38,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.logbox = new System.Windows.Forms.ListBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btn_stop = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.port_number = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // server
             // 
-            this.server.Location = new System.Drawing.Point(30, 41);
+            this.server.Location = new System.Drawing.Point(17, 189);
             this.server.Multiline = true;
             this.server.Name = "server";
             this.server.Size = new System.Drawing.Size(151, 29);
@@ -50,7 +53,7 @@
             // 
             // user
             // 
-            this.user.Location = new System.Drawing.Point(30, 115);
+            this.user.Location = new System.Drawing.Point(17, 266);
             this.user.Multiline = true;
             this.user.Name = "user";
             this.user.Size = new System.Drawing.Size(151, 29);
@@ -58,7 +61,7 @@
             // 
             // password
             // 
-            this.password.Location = new System.Drawing.Point(30, 197);
+            this.password.Location = new System.Drawing.Point(17, 337);
             this.password.Multiline = true;
             this.password.Name = "password";
             this.password.PasswordChar = '*';
@@ -70,7 +73,7 @@
             this.sumatrapdf.AutoSize = true;
             this.sumatrapdf.Checked = true;
             this.sumatrapdf.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.sumatrapdf.Location = new System.Drawing.Point(30, 267);
+            this.sumatrapdf.Location = new System.Drawing.Point(17, 122);
             this.sumatrapdf.Name = "sumatrapdf";
             this.sumatrapdf.Size = new System.Drawing.Size(151, 29);
             this.sumatrapdf.TabIndex = 3;
@@ -79,18 +82,18 @@
             // 
             // send_btn
             // 
-            this.send_btn.Location = new System.Drawing.Point(237, 41);
+            this.send_btn.Location = new System.Drawing.Point(187, 12);
             this.send_btn.Name = "send_btn";
-            this.send_btn.Size = new System.Drawing.Size(278, 92);
+            this.send_btn.Size = new System.Drawing.Size(160, 92);
             this.send_btn.TabIndex = 4;
-            this.send_btn.Text = "Wyślij";
+            this.send_btn.Text = "Nasłuchuj";
             this.send_btn.UseVisualStyleBackColor = true;
             this.send_btn.Click += new System.EventHandler(this.send_btn_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 13);
+            this.label1.Location = new System.Drawing.Point(12, 161);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 25);
             this.label1.TabIndex = 5;
@@ -99,7 +102,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 87);
+            this.label2.Location = new System.Drawing.Point(12, 238);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 25);
             this.label2.TabIndex = 6;
@@ -108,7 +111,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(25, 169);
+            this.label3.Location = new System.Drawing.Point(12, 309);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 25);
             this.label3.TabIndex = 7;
@@ -118,9 +121,9 @@
             // 
             this.logbox.FormattingEnabled = true;
             this.logbox.ItemHeight = 24;
-            this.logbox.Location = new System.Drawing.Point(237, 139);
+            this.logbox.Location = new System.Drawing.Point(187, 122);
             this.logbox.Name = "logbox";
-            this.logbox.Size = new System.Drawing.Size(278, 172);
+            this.logbox.Size = new System.Drawing.Size(343, 244);
             this.logbox.TabIndex = 8;
             // 
             // backgroundWorker1
@@ -128,11 +131,41 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
+            // btn_stop
+            // 
+            this.btn_stop.Location = new System.Drawing.Point(370, 12);
+            this.btn_stop.Name = "btn_stop";
+            this.btn_stop.Size = new System.Drawing.Size(160, 92);
+            this.btn_stop.TabIndex = 9;
+            this.btn_stop.Text = "Stop";
+            this.btn_stop.UseVisualStyleBackColor = true;
+            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 25);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Port:";
+            // 
+            // port_number
+            // 
+            this.port_number.Location = new System.Drawing.Point(13, 41);
+            this.port_number.Name = "port_number";
+            this.port_number.Size = new System.Drawing.Size(100, 29);
+            this.port_number.TabIndex = 11;
+            this.port_number.Text = "2202";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 569);
+            this.ClientSize = new System.Drawing.Size(550, 392);
+            this.Controls.Add(this.port_number);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.btn_stop);
             this.Controls.Add(this.logbox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -160,6 +193,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox logbox;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button btn_stop;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox port_number;
     }
 }
 

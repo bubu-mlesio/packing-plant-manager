@@ -16,8 +16,8 @@ namespace packing_plant_manager
         string pass;
         internal static string Form2_Message;
         bool unlock = true;
-        const int PORT_NO = 2201;
-        const string SERVER_IP = "127.0.0.1";
+        int PORT_NO = 2201;
+        string SERVER_IP = "127.0.0.1";
         static Socket clientSocket; //put here
 
         public Form1()
@@ -514,6 +514,38 @@ namespace packing_plant_manager
         //TODO auto update ftp data from server
         private void connection_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            try
+            {
+                PORT_NO = Int32.Parse(port_number.Text);
+                if (PORT_NO < 65536)
+                {
+                    if (PORT_NO < 0)
+                    {
+                        PORT_NO = 2201;
+                        loggingBox.Items.Add("Problem z portem, używam 2201");
+                    }
+                }
+                else
+                {
+                    PORT_NO = 2201;
+                    loggingBox.Items.Add("Problem z portem, używam 2201");
+                }
+
+            }
+            catch
+            {
+                PORT_NO = 2201;
+                loggingBox.Items.Add("Problem z portem, używam 2201");
+            }
+            try
+            {
+                SERVER_IP = serwerIP.Text;
+                IPAddress.Parse(SERVER_IP);
+            }
+            catch
+            {
+                SERVER_IP = "127.0.0.1";
+            }
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             loopConnect(3, 3); //for failure handling
             byte[] bytes = Encoding.ASCII.GetBytes("hello");

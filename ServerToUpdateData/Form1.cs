@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
-using System.IO;
-using System.Threading;
 using System.Net;
 
 
@@ -18,22 +12,15 @@ namespace ServerToUpdateData
 {
     public partial class Form1 : Form
     {
-        const int PORT_NO = 2201;
+        int PORT_NO = 2201;
         const string SERVER_IP = "127.0.0.1";
         static Socket serverSocket; //put here as static
-        Thread startOperations;
 
 
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void send_btn_Click(object sender, EventArgs e)
-        {
-            //ThreadStart ts = new ThreadStart(tcpConnect);
-            //startOperations = new Thread(ts);
-            backgroundWorker1.RunWorkerAsync();
+            //backgroundWorker1.RunWorkerAsync();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -114,6 +101,40 @@ namespace ServerToUpdateData
             { // this exception will happen when "this" is be disposed...
                 logbox.Items.Add("receiveCallback fails with exception! " + e.ToString());
             }
+        }
+
+        private void send_btn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PORT_NO = Int32.Parse(port_number.Text);
+                if (PORT_NO < 65536)
+                {
+                    if (PORT_NO < 0)
+                    {
+                        PORT_NO = 2201;
+                        logbox.Items.Add("Problem z portem, używam 2201");
+                    }
+                }
+                else
+                {
+                    PORT_NO = 2201;
+                    logbox.Items.Add("Problem z portem, używam 2201");
+                }
+                    
+                }
+            catch
+            {
+                PORT_NO = 2201;
+                logbox.Items.Add("Problem z portem, używam 2201");
+            }
+            this.backgroundWorker1.RunWorkerAsync();
+        }
+
+        private void btn_stop_Click(object sender, EventArgs e)
+        {
+            logbox.Items.Add("Przerywam nasłuchiwanie");
+            backgroundWorker1.CancelAsync();
         }
     }
 
