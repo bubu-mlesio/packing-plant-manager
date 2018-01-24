@@ -49,6 +49,7 @@ namespace ServerToUpdateData
             catch (Exception e)
             { // this exception will happen when "this" is be disposed...        
                 logbox.Items.Add("BŁĄD: " + e.ToString());
+                logbox.Items.Add(e.ToString());
             }
         }
         const int MAX_RECEIVE_ATTEMPT = 10;
@@ -73,8 +74,21 @@ namespace ServerToUpdateData
                         }
                         if (Encoding.UTF8.GetString(data) == "Requier")//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
                         {
-                            string msg = server.Text;
+                            string msg = "[Server]=" + server.Text;
                             socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
+                            System.Threading.Thread.Sleep(500);
+                            string msg2 = "[Login]=" + user.Text;
+                            socket.Send(Encoding.ASCII.GetBytes(msg2));
+                            System.Threading.Thread.Sleep(500);
+                            string msg3 = "[Password]=" + password.Text;
+                            socket.Send(Encoding.ASCII.GetBytes(msg3));
+                            System.Threading.Thread.Sleep(500);
+                            string msg4 = "[SumatraPDF]=" + sumatrapdf.Checked.ToString();
+                            socket.Send(Encoding.ASCII.GetBytes(msg4));
+                            System.Threading.Thread.Sleep(500);
+                            string msg5 = "[Save]=" + save_checkbox.Checked.ToString();
+                            socket.Send(Encoding.ASCII.GetBytes(msg5));
+                            System.Threading.Thread.Sleep(500);
                         }
                         //Console.WriteLine(Encoding.UTF8.GetString(data)); //Here I just print it, but you need to do something else
                         receiveAttempt = 0; //reset receive attempt
@@ -100,6 +114,9 @@ namespace ServerToUpdateData
             catch (Exception e)
             { // this exception will happen when "this" is be disposed...
                 logbox.Items.Add("receiveCallback fails with exception! " + e.ToString());
+                logbox.Items.Add("Prawdopodobnie utracono połączenie");
+
+
             }
         }
 

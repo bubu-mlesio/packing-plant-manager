@@ -278,7 +278,6 @@
             this.port_number.Name = "port_number";
             this.port_number.Size = new System.Drawing.Size(180, 29);
             this.port_number.TabIndex = 22;
-            this.port_number.Text = "2202";
             // 
             // label8
             // 
@@ -296,7 +295,6 @@
             this.serwerIP.Name = "serwerIP";
             this.serwerIP.Size = new System.Drawing.Size(180, 29);
             this.serwerIP.TabIndex = 24;
-            this.serwerIP.Text = "127.0.0.1";
             // 
             // Form1
             // 

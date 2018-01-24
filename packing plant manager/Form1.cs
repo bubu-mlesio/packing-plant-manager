@@ -19,6 +19,7 @@ namespace packing_plant_manager
         int PORT_NO = 2201;
         string SERVER_IP = "127.0.0.1";
         static Socket clientSocket; //put here
+        bool autoupdate = false;
 
         public Form1()
         {
@@ -43,8 +44,14 @@ namespace packing_plant_manager
                 File.Delete("C:\\tmp\\log.txt");
             }
             loadData();
-            connection.RunWorkerAsync();
             pass = passwordGenerator();
+            if(port_number.Text != "")
+            {
+                if(serwerIP.Text != "")
+                {
+                    connection.RunWorkerAsync();
+                }
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -69,10 +76,18 @@ namespace packing_plant_manager
             else if (printer.Text == "")
             {
                 MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+            }
+            else if (serwerIP.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (port_number.Text == "")
+            {
+                MessageBox.Show("Dane do serwera nie mogą być puste", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
+                connection.RunWorkerAsync();
                 //run new thread
                 packingStationNumber = Convert.ToInt32(packingStation.SelectedItem);
                 ThreadStart ts = new ThreadStart(ftpOperations);
@@ -346,6 +361,14 @@ namespace packing_plant_manager
                         printer.Text = Base64Decode(aktualnaLinijka[1]);
                         //printer.Text = aktualnaLinijka[1];
                     }
+                    if (aktualnaLinijka[0] == "[SerwerIP]")
+                    {
+                        serwerIP.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
+                    if (aktualnaLinijka[0] == "[Port]")
+                    {
+                        port_number.Text = Base64Decode(aktualnaLinijka[1]);
+                    }
                     if (aktualnaLinijka[0] == "[SumatraPDF]")
                     {
                         if (aktualnaLinijka[1] == "False")
@@ -374,6 +397,16 @@ namespace packing_plant_manager
                     btnUnlock.Text = "Zablokuj";
                     unlock = true;
                 }
+                else if (port_number.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
+                else if (serwerIP.Text == "")
+                {
+                    btnUnlock.Text = "Zablokuj";
+                    unlock = true;
+                }
                 else
                 {
                     server.Enabled = false;
@@ -381,6 +414,8 @@ namespace packing_plant_manager
                     password.Enabled = false;
                     packingStation.Enabled = false;
                     printer.Enabled = false;
+                    serwerIP.Enabled = false;
+                    port_number.Enabled = false;
                     saveLoginData.Enabled = false;
                     unlock = false;
                     btnUnlock.Text = "Odblokuj";
@@ -410,17 +445,38 @@ namespace packing_plant_manager
             {
                 MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            else if (port_number.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (serwerIP.Text == "")
+            {
+                MessageBox.Show("Pola do zapisu nie mogą być puste!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else
             {
-                DialogResult dialog = MessageBox.Show("Jesteś pewny że chcesz dokonać zapisu?", "WARRNING!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (dialog == DialogResult.OK)
+                if (autoupdate == false)
+                {
+                    DialogResult dialog = MessageBox.Show("Jesteś pewny że chcesz dokonać zapisu?", "WARRNING!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (dialog == DialogResult.OK)
+                    {
+                        if (File.Exists("C:\\Windows\\config_packing_manager.sys"))
+                        {
+                            File.Delete("C:\\Windows\\config_packing_manager.sys");
+                        }
+                        string[] dane = { "[Server]=" + Base64Encode(server.Text), "[Login]=" + Base64Encode(login.Text), "[Password]=" + Base64Encode(password.Text), "[PackingNumber]=" + Base64Encode(packingStation.SelectedItem.ToString()), "[ThermalPrinter]=" + Base64Encode(printer.Text), "[SumatraPDF]=" + sumatra_checkbox.Checked.ToString(), "[SerwerIP]=" + Base64Encode(serwerIP.Text), "[Port]=" + Base64Encode(port_number.Text) };
+                        System.IO.File.WriteAllLines("C:\\Windows\\config_packing_manager.sys", dane);
+                    }
+                }
+                else
                 {
                     if (File.Exists("C:\\Windows\\config_packing_manager.sys"))
                     {
                         File.Delete("C:\\Windows\\config_packing_manager.sys");
                     }
-                    string[] dane = { "[Server]=" + Base64Encode(server.Text), "[Login]=" + Base64Encode(login.Text), "[Password]=" + Base64Encode(password.Text), "[PackingNumber]=" + Base64Encode(packingStation.SelectedItem.ToString()), "[ThermalPrinter]=" + Base64Encode(printer.Text), "[SumatraPDF]=" + sumatra_checkbox.Checked.ToString() };
+                    string[] dane = { "[Server]=" + Base64Encode(server.Text), "[Login]=" + Base64Encode(login.Text), "[Password]=" + Base64Encode(password.Text), "[PackingNumber]=" + Base64Encode(packingStation.SelectedItem.ToString()), "[ThermalPrinter]=" + Base64Encode(printer.Text), "[SumatraPDF]=" + sumatra_checkbox.Checked.ToString(), "[SerwerIP]=" + Base64Encode(serwerIP.Text), "[Port]=" + Base64Encode(port_number.Text) };
                     System.IO.File.WriteAllLines("C:\\Windows\\config_packing_manager.sys", dane);
+                    autoupdate = false;
                 }
             }
     }
@@ -454,6 +510,8 @@ namespace packing_plant_manager
                             packingStation.Enabled = true;
                             printer.Enabled = true;
                             saveLoginData.Enabled = true;
+                            serwerIP.Enabled = true;
+                            port_number.Enabled = true;
                             unlock = true;
                             btnUnlock.Text = "Zablokuj";
                         }
@@ -477,6 +535,8 @@ namespace packing_plant_manager
             packingStation.Enabled = false;
             printer.Enabled = false;
             saveLoginData.Enabled = false;
+                serwerIP.Enabled = false;
+                port_number.Enabled = false;
             unlock = false;
             btnUnlock.Text = "Odblokuj";
         }
@@ -562,7 +622,8 @@ namespace packing_plant_manager
                     loggingBox.Items.Add("Próbuję się łączyć");
                     IAsyncResult result = clientSocket.BeginConnect(IPAddress.Parse(SERVER_IP), PORT_NO, endConnectCallback, null);
                     result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(attemptPeriodInSeconds));
-                    System.Threading.Thread.Sleep(attemptPeriodInSeconds * 1000);
+                    //System.Threading.Thread.Sleep(attemptPeriodInSeconds * 1000);
+                    System.Threading.Thread.Sleep(5000);
                 }
                 catch (Exception e)
                 {
@@ -594,7 +655,7 @@ namespace packing_plant_manager
                 {
                     loggingBox.Invoke(new Action(delegate ()
                     {
-                        loggingBox.Items.Add("End of connection attempt, fail to connect...");
+                        loggingBox.Items.Add("Nie można odebrać danych");
                     }));
                     
                 }
@@ -603,7 +664,7 @@ namespace packing_plant_manager
             {
                 loggingBox.Invoke(new Action(delegate ()
                 {
-                    loggingBox.Items.Add("End-connection attempt is unsuccessful! " + e.ToString());
+                    loggingBox.Items.Add("Połączenie nie zostało nawiązane " + e.ToString());
                 }));
                 
             }
@@ -635,19 +696,53 @@ namespace packing_plant_manager
                         }
                         else if (Encoding.UTF8.GetString(data) != "OK")//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
                         {
-                            loggingBox.Invoke(new Action(delegate ()
+                            /*loggingBox.Invoke(new Action(delegate ()
                             {
                                 loggingBox.Items.Add("server: " + Encoding.UTF8.GetString(data));
-                            }));
+                            }));*/
+                            string tmp = Encoding.UTF8.GetString(data);
+                            string[] lines = tmp.Split('=');
+                            if (lines[0] == "[Server]")
+                            {
+                                server.Invoke(new Action(delegate () {
+                                    server.Text = lines[1];
+                                }));
+                            } else if (lines[0] == "[Login]")
+                            {
+                                login.Invoke(new Action(delegate () {
+                                    login.Text = lines[1];
+                                }));
+                                } else if (lines[0] == "[Password]")
+                            {
+                                password.Invoke(new Action(delegate () { 
+                                password.Text = lines[1];
+                                }));
+                                    } else if (lines[0] == "[SumatraPDF]")
+                            {
+                                if (lines[1] == "True") {
+                                    sumatra_checkbox.Invoke(new Action(delegate () { 
+                                    sumatra_checkbox.Checked = true;
+                                }));
+                            }
+                            else {
+                                sumatra_checkbox.Invoke(new Action(delegate () { 
+                                    sumatra_checkbox.Checked = false;
+                            })); }
+                            }
+                            else if (lines[0] == "[Save]")
+                            {
+                                if (lines[1] == "True")
+                                    saveLoginData.Invoke(new Action(delegate ()
+                                    {
+                                        autoupdate = true;
+                                        saveLoginData_Click(new object(), new EventArgs());
+                                    }));
+                            }
                             //string msg = "OK";
                             //socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
                         }//DO ANYTHING THAT YOU WANT WITH data, IT IS THE RECEIVED PACKET!
                          //Notice that your data is not string! It is actually byte[]
                          //For now I will just print it out
-                        loggingBox.Invoke(new Action(delegate ()
-                        {
-                            loggingBox.Items.Add("Server: " + Encoding.UTF8.GetString(data));
-                        }));
                     socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(receiveCallback), socket);
                     }
                     else if (receiveAttempt < MAX_RECEIVE_ATTEMPT)
@@ -657,7 +752,10 @@ namespace packing_plant_manager
                     }
                     else
                     { //completely fails!
-                        loggingBox.Items.Add("receiveCallback is failed!");
+                        loggingBox.Invoke(new Action(delegate ()
+                        {
+                            loggingBox.Items.Add("receiveCallback is failed!");
+                        }));
                         receiveAttempt = 0;
                         clientSocket.Close();
                     }
@@ -665,7 +763,11 @@ namespace packing_plant_manager
             }
             catch (Exception e)
             { // this exception will happen when "this" is be disposed...
-                loggingBox.Items.Add("receiveCallback is failed! " + e.ToString());
+                loggingBox.Invoke(new Action(delegate ()
+                {
+                    loggingBox.Items.Add("receiveCallback is failed! " + e.ToString());
+                    loggingBox.Items.Add(e.ToString());
+                }));
             }
         }
     }

@@ -41,6 +41,7 @@
             this.btn_stop = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.port_number = new System.Windows.Forms.TextBox();
+            this.save_checkbox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // server
@@ -158,11 +159,22 @@
             this.port_number.TabIndex = 11;
             this.port_number.Text = "2202";
             // 
+            // save_checkbox
+            // 
+            this.save_checkbox.AutoSize = true;
+            this.save_checkbox.Location = new System.Drawing.Point(13, 87);
+            this.save_checkbox.Name = "save_checkbox";
+            this.save_checkbox.Size = new System.Drawing.Size(118, 29);
+            this.save_checkbox.TabIndex = 12;
+            this.save_checkbox.Text = "Zapisać?";
+            this.save_checkbox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 392);
+            this.Controls.Add(this.save_checkbox);
             this.Controls.Add(this.port_number);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btn_stop);
@@ -196,6 +208,7 @@
         private System.Windows.Forms.Button btn_stop;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox port_number;
+        private System.Windows.Forms.CheckBox save_checkbox;
     }
 }
 
