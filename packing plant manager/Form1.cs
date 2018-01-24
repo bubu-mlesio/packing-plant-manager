@@ -87,7 +87,6 @@ namespace packing_plant_manager
             }
             else
             {
-                connection.RunWorkerAsync();
                 //run new thread
                 packingStationNumber = Convert.ToInt32(packingStation.SelectedItem);
                 ThreadStart ts = new ThreadStart(ftpOperations);
@@ -610,6 +609,7 @@ namespace packing_plant_manager
             loopConnect(3, 3); //for failure handling
             byte[] bytes = Encoding.ASCII.GetBytes("hello");
             clientSocket.Send(bytes);
+            loggingBox.Items.Add("Wysyłam zapytanie...");
         }
         void loopConnect(int noOfRetry, int attemptPeriodInSeconds)
         {
@@ -621,18 +621,21 @@ namespace packing_plant_manager
                     ++attempts;
                     loggingBox.Items.Add("Próbuję się łączyć");
                     IAsyncResult result = clientSocket.BeginConnect(IPAddress.Parse(SERVER_IP), PORT_NO, endConnectCallback, null);
-                    result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(attemptPeriodInSeconds));
+                    result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(10));
+                    //result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(attemptPeriodInSeconds));
                     //System.Threading.Thread.Sleep(attemptPeriodInSeconds * 1000);
                     System.Threading.Thread.Sleep(5000);
                 }
                 catch (Exception e)
                 {
                     loggingBox.Items.Add("Error: " + e.ToString());
+                    btnStart.Enabled = true;
                 }
             }
             if (!clientSocket.Connected)
             {
                 loggingBox.Items.Add("Connection attempt is unsuccessful!");
+                btnStart.Enabled = true;
                 return;
             }
         }
@@ -657,7 +660,11 @@ namespace packing_plant_manager
                     {
                         loggingBox.Items.Add("Nie można odebrać danych");
                     }));
-                    
+                    btnStart.Invoke(new Action(delegate ()
+                    {
+                        btnStart.Enabled = true;
+                    }));
+
                 }
             }
             catch (Exception e)
@@ -666,7 +673,11 @@ namespace packing_plant_manager
                 {
                     loggingBox.Items.Add("Połączenie nie zostało nawiązane " + e.ToString());
                 }));
-                
+                btnStart.Invoke(new Action(delegate ()
+                {
+                    btnStart.Enabled = true;
+                }));
+
             }
         }
         const int MAX_RECEIVE_ATTEMPT = 10;
@@ -689,12 +700,23 @@ namespace packing_plant_manager
                         {
                             loggingBox.Invoke(new Action(delegate ()
                             {
-                                loggingBox.Items.Add("Wysyłam dane");
+                                loggingBox.Items.Add("Wysyłam żądanie");
                             }));
                             string msg = "Requier";
                             socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
                         }
-                        else if (Encoding.UTF8.GetString(data) != "OK")//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
+                        else if(Encoding.UTF8.GetString(data) == "IsEmpty")
+                        {
+                            loggingBox.Invoke(new Action(delegate ()
+                            {
+                                loggingBox.Items.Add("Twoje dane są aktualne!");
+                            }));
+                            btnStart.Invoke(new Action(delegate ()
+                            {
+                                btnStart.Enabled = true;
+                            }));
+                        }
+                        else//DO SOMETHING ON THE DATA IN byte[] data!! Yihaa!!
                         {
                             /*loggingBox.Invoke(new Action(delegate ()
                             {
@@ -732,11 +754,21 @@ namespace packing_plant_manager
                             else if (lines[0] == "[Save]")
                             {
                                 if (lines[1] == "True")
+                                {
                                     saveLoginData.Invoke(new Action(delegate ()
                                     {
                                         autoupdate = true;
                                         saveLoginData_Click(new object(), new EventArgs());
                                     }));
+                                }
+                                loggingBox.Invoke(new Action(delegate ()
+                                {
+                                    loggingBox.Items.Add("Aktualizacja zakończona pomyślnie.");
+                                }));
+                                btnStart.Invoke(new Action(delegate ()
+                                {
+                                    btnStart.Enabled = true;
+                                }));
                             }
                             //string msg = "OK";
                             //socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
@@ -756,6 +788,10 @@ namespace packing_plant_manager
                         {
                             loggingBox.Items.Add("receiveCallback is failed!");
                         }));
+                        btnStart.Invoke(new Action(delegate ()
+                        {
+                            btnStart.Enabled = true;
+                        }));
                         receiveAttempt = 0;
                         clientSocket.Close();
                     }
@@ -767,6 +803,10 @@ namespace packing_plant_manager
                 {
                     loggingBox.Items.Add("receiveCallback is failed! " + e.ToString());
                     loggingBox.Items.Add(e.ToString());
+                }));
+                btnStart.Invoke(new Action(delegate()
+                {
+                    btnStart.Enabled = true;
                 }));
             }
         }

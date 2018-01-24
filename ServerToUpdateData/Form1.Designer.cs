@@ -37,7 +37,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.logbox = new System.Windows.Forms.ListBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btn_stop = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.port_number = new System.Windows.Forms.TextBox();
@@ -127,11 +126,6 @@
             this.logbox.Size = new System.Drawing.Size(343, 244);
             this.logbox.TabIndex = 8;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
             // btn_stop
             // 
             this.btn_stop.Location = new System.Drawing.Point(370, 12);
@@ -204,7 +198,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox logbox;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button btn_stop;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox port_number;
