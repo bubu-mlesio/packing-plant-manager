@@ -31,3 +31,13 @@ C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\obj\Releas
 C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe.config
 C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.exe
 C:\Users\Izabelka\Desktop\packing plant manager\packing plant manager\bin\Release\packing plant manager.pdb
+C:\github\packing-plant-manager\packing plant manager\bin\Release\packing plant manager.exe.config
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing plant manager.exe
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing plant manager.pdb
+C:\github\packing-plant-manager\packing plant manager\bin\Release\packing plant manager.exe
+C:\github\packing-plant-manager\packing plant manager\bin\Release\packing plant manager.pdb
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing plant manager.csprojResolveAssemblyReference.cache
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing_plant_manager.Form1.resources
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing_plant_manager.Form2.resources
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing_plant_manager.Properties.Resources.resources
+C:\github\packing-plant-manager\packing plant manager\obj\Release\packing plant manager.csproj.GenerateResource.Cache

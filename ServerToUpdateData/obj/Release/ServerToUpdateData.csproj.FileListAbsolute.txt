@@ -1,1 +1,12 @@
 C:\Users\Jan Drożak\Desktop\packing plant manager\ServerToUpdateData\bin\Release\ServerToUpdateData.exe.config
+C:\github\packing-plant-manager\ServerToUpdateData\bin\Release\ServerToUpdateData.exe.config
+C:\github\packing-plant-manager\ServerToUpdateData\bin\Release\ServerToUpdateData.exe
+C:\github\packing-plant-manager\ServerToUpdateData\bin\Release\ServerToUpdateData.pdb
+C:\github\packing-plant-manager\ServerToUpdateData\bin\Release\Lidgren.Network.dll
+C:\github\packing-plant-manager\ServerToUpdateData\bin\Release\Lidgren.Network.pdb
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.Form1.resources
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.Properties.Resources.resources
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.csproj.GenerateResource.Cache
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.exe
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.pdb
+C:\github\packing-plant-manager\ServerToUpdateData\obj\Release\ServerToUpdateData.csprojResolveAssemblyReference.cache
