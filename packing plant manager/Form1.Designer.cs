@@ -59,6 +59,8 @@
             this.btnStart.Enabled = false;
             this.btnStart.Location = new System.Drawing.Point(308, 161);
             this.btnStart.Margin = new System.Windows.Forms.Padding(6);
+            this.btnStart.MaximumSize = new System.Drawing.Size(275, 42);
+            this.btnStart.MinimumSize = new System.Drawing.Size(275, 42);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(275, 42);
             this.btnStart.TabIndex = 0;
@@ -71,6 +73,8 @@
             this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(308, 214);
             this.btnStop.Margin = new System.Windows.Forms.Padding(6);
+            this.btnStop.MaximumSize = new System.Drawing.Size(275, 42);
+            this.btnStop.MinimumSize = new System.Drawing.Size(275, 42);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(275, 42);
             this.btnStop.TabIndex = 1;
@@ -83,6 +87,8 @@
             this.pictureBox1.Image = global::packing_plant_manager.Properties.Resources.logo;
             this.pictureBox1.Location = new System.Drawing.Point(22, 22);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
+            this.pictureBox1.MaximumSize = new System.Drawing.Size(561, 127);
+            this.pictureBox1.MinimumSize = new System.Drawing.Size(561, 127);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(561, 127);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -95,6 +101,8 @@
             this.loggingBox.ItemHeight = 24;
             this.loggingBox.Location = new System.Drawing.Point(24, 565);
             this.loggingBox.Margin = new System.Windows.Forms.Padding(6);
+            this.loggingBox.MaximumSize = new System.Drawing.Size(558, 412);
+            this.loggingBox.MinimumSize = new System.Drawing.Size(558, 412);
             this.loggingBox.Name = "loggingBox";
             this.loggingBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.loggingBox.Size = new System.Drawing.Size(558, 412);
@@ -104,6 +112,8 @@
             // 
             this.server.Location = new System.Drawing.Point(114, 161);
             this.server.Margin = new System.Windows.Forms.Padding(6);
+            this.server.MaximumSize = new System.Drawing.Size(180, 29);
+            this.server.MinimumSize = new System.Drawing.Size(180, 29);
             this.server.Name = "server";
             this.server.Size = new System.Drawing.Size(180, 29);
             this.server.TabIndex = 5;
@@ -112,6 +122,8 @@
             // 
             this.login.Location = new System.Drawing.Point(114, 209);
             this.login.Margin = new System.Windows.Forms.Padding(6);
+            this.login.MaximumSize = new System.Drawing.Size(180, 29);
+            this.login.MinimumSize = new System.Drawing.Size(180, 29);
             this.login.Name = "login";
             this.login.Size = new System.Drawing.Size(180, 29);
             this.login.TabIndex = 6;
@@ -120,6 +132,8 @@
             // 
             this.password.Location = new System.Drawing.Point(114, 257);
             this.password.Margin = new System.Windows.Forms.Padding(6);
+            this.password.MaximumSize = new System.Drawing.Size(180, 29);
+            this.password.MinimumSize = new System.Drawing.Size(180, 29);
             this.password.Name = "password";
             this.password.PasswordChar = '*';
             this.password.Size = new System.Drawing.Size(180, 29);
@@ -130,6 +144,8 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(19, 530);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.MaximumSize = new System.Drawing.Size(55, 25);
+            this.label1.MinimumSize = new System.Drawing.Size(55, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 25);
             this.label1.TabIndex = 8;
@@ -140,6 +156,8 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(22, 174);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.MaximumSize = new System.Drawing.Size(80, 25);
+            this.label2.MinimumSize = new System.Drawing.Size(80, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 25);
             this.label2.TabIndex = 9;
@@ -150,6 +168,8 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(18, 222);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label3.MaximumSize = new System.Drawing.Size(66, 25);
+            this.label3.MinimumSize = new System.Drawing.Size(66, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 25);
             this.label3.TabIndex = 10;
@@ -160,6 +180,8 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(22, 270);
             this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.MaximumSize = new System.Drawing.Size(68, 25);
+            this.label4.MinimumSize = new System.Drawing.Size(68, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 25);
             this.label4.TabIndex = 11;
@@ -169,6 +191,8 @@
             // 
             this.saveLoginData.Location = new System.Drawing.Point(308, 462);
             this.saveLoginData.Margin = new System.Windows.Forms.Padding(6);
+            this.saveLoginData.MaximumSize = new System.Drawing.Size(273, 42);
+            this.saveLoginData.MinimumSize = new System.Drawing.Size(273, 42);
             this.saveLoginData.Name = "saveLoginData";
             this.saveLoginData.Size = new System.Drawing.Size(273, 42);
             this.saveLoginData.TabIndex = 12;
@@ -202,6 +226,8 @@
             "20"});
             this.packingStation.Location = new System.Drawing.Point(114, 305);
             this.packingStation.Margin = new System.Windows.Forms.Padding(6);
+            this.packingStation.MaximumSize = new System.Drawing.Size(180, 0);
+            this.packingStation.MinimumSize = new System.Drawing.Size(180, 0);
             this.packingStation.Name = "packingStation";
             this.packingStation.Size = new System.Drawing.Size(180, 32);
             this.packingStation.TabIndex = 13;
@@ -213,6 +239,8 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(22, 319);
             this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label5.MaximumSize = new System.Drawing.Size(85, 25);
+            this.label5.MinimumSize = new System.Drawing.Size(85, 25);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 25);
             this.label5.TabIndex = 14;
@@ -222,6 +250,8 @@
             // 
             this.printer.Location = new System.Drawing.Point(114, 356);
             this.printer.Margin = new System.Windows.Forms.Padding(6);
+            this.printer.MaximumSize = new System.Drawing.Size(180, 29);
+            this.printer.MinimumSize = new System.Drawing.Size(180, 29);
             this.printer.Name = "printer";
             this.printer.Size = new System.Drawing.Size(180, 29);
             this.printer.TabIndex = 15;
@@ -231,6 +261,8 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(22, 360);
             this.label6.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label6.MaximumSize = new System.Drawing.Size(69, 25);
+            this.label6.MinimumSize = new System.Drawing.Size(69, 25);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 25);
             this.label6.TabIndex = 16;
@@ -240,6 +272,8 @@
             // 
             this.btnUnlock.Location = new System.Drawing.Point(308, 412);
             this.btnUnlock.Margin = new System.Windows.Forms.Padding(6);
+            this.btnUnlock.MaximumSize = new System.Drawing.Size(273, 42);
+            this.btnUnlock.MinimumSize = new System.Drawing.Size(273, 42);
             this.btnUnlock.Name = "btnUnlock";
             this.btnUnlock.Size = new System.Drawing.Size(273, 42);
             this.btnUnlock.TabIndex = 19;
@@ -252,6 +286,8 @@
             this.sumatra_checkbox.AutoSize = true;
             this.sumatra_checkbox.Location = new System.Drawing.Point(114, 395);
             this.sumatra_checkbox.Margin = new System.Windows.Forms.Padding(4);
+            this.sumatra_checkbox.MaximumSize = new System.Drawing.Size(151, 29);
+            this.sumatra_checkbox.MinimumSize = new System.Drawing.Size(151, 29);
             this.sumatra_checkbox.Name = "sumatra_checkbox";
             this.sumatra_checkbox.Size = new System.Drawing.Size(151, 29);
             this.sumatra_checkbox.TabIndex = 20;
@@ -267,6 +303,8 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(24, 438);
+            this.label7.MaximumSize = new System.Drawing.Size(53, 25);
+            this.label7.MinimumSize = new System.Drawing.Size(53, 25);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 25);
             this.label7.TabIndex = 21;
@@ -276,6 +314,8 @@
             // 
             this.port_number.Location = new System.Drawing.Point(114, 434);
             this.port_number.Margin = new System.Windows.Forms.Padding(6);
+            this.port_number.MaximumSize = new System.Drawing.Size(180, 29);
+            this.port_number.MinimumSize = new System.Drawing.Size(180, 29);
             this.port_number.Name = "port_number";
             this.port_number.Size = new System.Drawing.Size(180, 29);
             this.port_number.TabIndex = 22;
@@ -284,6 +324,8 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(19, 484);
+            this.label8.MaximumSize = new System.Drawing.Size(80, 25);
+            this.label8.MinimumSize = new System.Drawing.Size(80, 25);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(80, 25);
             this.label8.TabIndex = 23;
@@ -293,6 +335,8 @@
             // 
             this.serwerIP.Location = new System.Drawing.Point(116, 481);
             this.serwerIP.Margin = new System.Windows.Forms.Padding(6);
+            this.serwerIP.MaximumSize = new System.Drawing.Size(180, 29);
+            this.serwerIP.MinimumSize = new System.Drawing.Size(180, 29);
             this.serwerIP.Name = "serwerIP";
             this.serwerIP.Size = new System.Drawing.Size(180, 29);
             this.serwerIP.TabIndex = 24;
@@ -328,6 +372,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(633, 1059);
+            this.MinimumSize = new System.Drawing.Size(633, 1059);
             this.Name = "Form1";
             this.Text = "Pakowalnia";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
