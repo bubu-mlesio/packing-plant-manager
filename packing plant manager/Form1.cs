@@ -322,6 +322,7 @@ namespace packing_plant_manager
                     if ((startOperations.ThreadState & ThreadState.Running) == ThreadState.Running)
                     {
                         startOperations.Abort();
+                        connection.CancelAsync();
                     }
                 }
             }
@@ -480,7 +481,7 @@ namespace packing_plant_manager
             }
     }
         //check date modified log.txt
-    private bool checkModified(string filename)
+        private bool checkModified(string filename)
     {
         DateTime lastModified = File.GetLastWriteTime("C:\\tmp\\log.txt");
         if (lastModified.Date < DateTime.Now.Date)
@@ -493,7 +494,7 @@ namespace packing_plant_manager
         }
     }
         //Unblock textbox
-    private void btnUnlock_Click(object sender, EventArgs e)
+        private void btnUnlock_Click(object sender, EventArgs e)
     {
             if (unlock == false)
         {
@@ -630,12 +631,15 @@ namespace packing_plant_manager
                 {
                     loggingBox.Items.Add("Error: " + e.ToString());
                     btnStart.Enabled = true;
+                    saveToFile();
                 }
             }
             if (!clientSocket.Connected)
             {
                 loggingBox.Items.Add("Connection attempt is unsuccessful!");
+                saveToFile();
                 btnStart.Enabled = true;
+                this.connection.CancelAsync();
                 return;
             }
         }
@@ -673,6 +677,7 @@ namespace packing_plant_manager
                 {
                     loggingBox.Items.Add("Połączenie nie zostało nawiązane " + e.ToString());
                 }));
+                saveToFile();
                 btnStart.Invoke(new Action(delegate ()
                 {
                     btnStart.Enabled = true;
@@ -769,6 +774,7 @@ namespace packing_plant_manager
                                 {
                                     btnStart.Enabled = true;
                                 }));
+                                this.connection.CancelAsync();
                             }
                             //string msg = "OK";
                             //socket.Send(Encoding.ASCII.GetBytes(msg)); //Note that you actually send data in byte[]
@@ -804,6 +810,7 @@ namespace packing_plant_manager
                     loggingBox.Items.Add("receiveCallback is failed! " + e.ToString());
                     loggingBox.Items.Add(e.ToString());
                 }));
+                saveToFile();
                 btnStart.Invoke(new Action(delegate()
                 {
                     btnStart.Enabled = true;

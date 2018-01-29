@@ -345,7 +345,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(605, 991);
             this.Controls.Add(this.serwerIP);
             this.Controls.Add(this.label8);
@@ -369,11 +369,8 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(633, 1059);
-            this.MinimumSize = new System.Drawing.Size(633, 1059);
             this.Name = "Form1";
             this.Text = "Pakowalnia";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
