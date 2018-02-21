@@ -157,7 +157,12 @@ namespace packing_plant_manager
                 }
                 while (true)
                 {
-                    loggingBox.Invoke(new Action(delegate ()
+                    btnStart.Invoke(new Action(delegate ()
+                    {
+                        if (btnStart.Enabled == true)
+                            btnStart.Enabled = false;
+                    }));
+                        loggingBox.Invoke(new Action(delegate ()
                     {
                         if (loggingBox.Items.Count > 2000)
                         {
@@ -322,8 +327,11 @@ namespace packing_plant_manager
                     if ((startOperations.ThreadState & ThreadState.Running) == ThreadState.Running)
                     {
                         startOperations.Abort();
-                        connection.CancelAsync();
                     }
+                }
+                if (connection.IsBusy)
+                {
+                    connection.CancelAsync();
                 }
             }
         }
@@ -630,7 +638,6 @@ namespace packing_plant_manager
                 catch (Exception e)
                 {
                     loggingBox.Items.Add("Error: " + e.ToString());
-                    btnStart.Enabled = true;
                     saveToFile();
                 }
             }
@@ -668,6 +675,7 @@ namespace packing_plant_manager
                     {
                         btnStart.Enabled = true;
                     }));
+                    connection.CancelAsync();
 
                 }
             }
@@ -678,10 +686,6 @@ namespace packing_plant_manager
                     loggingBox.Items.Add("Połączenie nie zostało nawiązane " + e.ToString());
                 }));
                 saveToFile();
-                btnStart.Invoke(new Action(delegate ()
-                {
-                    btnStart.Enabled = true;
-                }));
 
             }
         }
@@ -815,6 +819,21 @@ namespace packing_plant_manager
                 {
                     btnStart.Enabled = true;
                 }));
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (startOperations != null)
+            {
+                if ((startOperations.ThreadState & ThreadState.Running) == ThreadState.Running)
+                {
+                    startOperations.Abort();
+                }
+            }
+            if (connection.IsBusy)
+            {
+                connection.CancelAsync();
             }
         }
     }
